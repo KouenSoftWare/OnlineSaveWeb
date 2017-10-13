@@ -13,18 +13,23 @@ def index(request):
     p = os.popen('df -h | grep data')
     result = list(map(
         lambda x: list(filter(lambda xx: xx, x.split(' '))),
-        p.read().split("\n")[1:]
+        p.read().split("\n")
     ))
     p.close()
     tempRow = []
     for item in result:
+        if not item:
+            continue
+
         tempRow.append({
-            "name": item[0].split('/')[-1],
+            "name": item[0].split('/')[-1].replace('1', ''),
             "rate": item[4]
         })
         if len(tempRow) == 3:
             listProcess.append(tempRow)
             tempRow = []
+    if tempRow:
+        listProcess.append(tempRow)
     return render(request, 'Downloads/index.html', {"listProcess": listProcess})
 
 
