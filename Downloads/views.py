@@ -8,7 +8,24 @@ import base64
 
 
 def index(request):
-    return render(request, 'Downloads/index.html', {})
+    listProcess = []
+
+    p = os.popen('df -h | grep data')
+    result = list(map(
+        lambda x: list(filter(lambda xx: xx, x.split(' '))),
+        p.read().split("\n")[1:]
+    ))
+    p.close()
+    tempRow = []
+    for item in result:
+        tempRow.append({
+            "name": item[0].split('/')[-1],
+            "rate": item[4]
+        })
+        if len(tempRow) == 3:
+            listProcess.append(tempRow)
+            tempRow = []
+    return render(request, 'Downloads/index.html', {"listProcess": listProcess})
 
 
 def table(request):

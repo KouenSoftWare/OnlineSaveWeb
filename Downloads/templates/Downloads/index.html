@@ -51,6 +51,18 @@
             </thead>
         </table>
     </div>
+    <hr >
+    {% for lstItem in listProcess %}
+        <div class="row">
+            {% for item in lstItem  %}
+                <div class="col-lg-4">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ item.rate }}">{{ item.name }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
 
     <script type="text/javascript" language="JavaScript" src="{% static 'Downloads/js/downloads.js' %}"></script>
 </body>
